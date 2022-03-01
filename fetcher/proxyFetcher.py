@@ -12,6 +12,7 @@
 """
 __author__ = 'JHao'
 
+import json
 import re
 from time import sleep
 
@@ -152,6 +153,17 @@ class ProxyFetcher(object):
             r.text)
         for proxy in proxies:
             yield ':'.join(proxy)
+    
+    @staticmethod
+    def ipidea():
+        """ ipidea """
+        r = WebRequest().get("http://tiqu.ipidea.io:2330/getProxyIp?num=100&return_type=json&regions=kr&protocol=http", timeout=10)
+        proxies = json.loads(r.text)
+        print(proxies)
+        for proxy in proxies['Data']:
+            proxy_ip = str(proxy['ip'])
+            proxy_port = str(proxy['port'])
+            yield proxy_ip+':'+proxy_port
 
     # @staticmethod
     # def wallProxy01():
